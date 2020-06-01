@@ -1,0 +1,39 @@
+<head>
+	<link href="basement/polyplot.css" rel="stylesheet">
+	<link href="book.css" rel="stylesheet">
+	<script type="text/javascript" src="basement/jquery.min.js"></script>
+	<link rel="apple-touch-icon" sizes="128x128" href="icons/128x128.png">
+	<link rel="manifest" href="basement/manifest.webmanifest">
+	<script>
+		if('serviceWorker' in navigator) {
+			navigator.serviceWorker.register('basement/sw.js')
+			  .then(function() { console.log("Service worker registered"); });
+		};
+	</script>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+<body>
+	<nav role="navigation">
+		<div id="menuToggle">
+			<input type="checkbox" />
+			<span></span>
+			<span></span>
+			<span></span>
+			<ul id="menu">
+				<li><a href="javascript:startOver();">Start Over</a></li>
+				<li><a id="dark" href="javascript:toggleDark();">Dark Mode</a></li>
+				<li><a id="serif" href="javascript:toggleSerif();">Serif</a></li>
+				<li><a href="javascript:resetBook();">Factory Reset</a></li>
+			</ul>
+		</div>
+		<a class="fontsize" id="bigger" href="javascript:fontBigger();">A</a>
+		<a class="fontsize" id="smaller" href="javascript:fontSmaller();">A</a>
+	</nav>
+	<div id="filler">
+	</div>
+	<div id="booktext">
+		Loading book...
+	</div>
+	<script type="text/javascript" src="basement/polyplot.js"></script>
+	<script type="text/javascript" src="book.js"></script>
+</body>

@@ -1,0 +1,16 @@
+{
+    "name": "Demonstrating Polyplot, a very short novel",
+    "short_name": "Polyplot Demo",
+    "description": "A famous adventure writer and a smart programmer explore the inner workings of Polyplot.",
+    "icons": [
+        {
+            "src": "/polyplot/icons/128x128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/polyplot/index.html",
+    "display": "fullscreen",
+    "theme_color": "#000000",
+    "background_color": "#000000"
+}
