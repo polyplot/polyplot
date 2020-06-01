@@ -1,3 +1,6 @@
+/* Polyplot is copyright 2020 by Polyplot Berlin */
+
+
 "use strict";
 
 const endString = "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
