@@ -309,8 +309,49 @@ function tagParse(tag) {
 // Below are all the tags shipped with Polyplot. You can make your own
 // tags by just creating a function like one of these in the book.js file.
 
+function tag_anchor(tagtext) {
+	return "";
+}
+
+function tag_else(tagtext) {
+	if (!last_if) {
+		return polyParse(tagtext);
+	} else {
+		return "";
+	}
+}
+
+function tag_end(tagtext) {
+	console.log("endtag");
+	jumping = 'end';
+	return "";
+}
+
+function tag_lock(tagtext) {
+	vars['poly_lock'] = true;
+	vars['poly_locktext'] = tagtext;
+	saveVars();
+	return "";
+}
+
 function tag_option(tagtext) {
 	current_options.push(tagtext);
+	return "";
+}
+
+function tag_if(tagtext) {
+	var parts = oneSplit(":", tagtext);
+	last_if = doEval(parts[0]);
+	if (last_if) {
+		return polyParse(parts[1]);
+	} else {
+		return "";
+	}
+}
+
+function tag_jump(tagtext) {
+	jumping = tagtext;
+	vars[tagtext] = true;
 	return "";
 }
 
@@ -356,48 +397,12 @@ function tag_options(tagtext) {
 	return ret;
 }
 
-function tag_end(tagtext) {
-	console.log("endtag");
-	jumping = 'end';
-	return "";
-}
-
 function tag_print(tagtext) {
 	return doEval(tagtext);
 }
 
-function tag_anchor(tagtext) {
-	return "";
-}
-
-function tag_jump(tagtext) {
-	jumping = tagtext;
-	vars[tagtext] = true;
-	return "";
-}
-
-function tag_if(tagtext) {
-	var parts = oneSplit(":", tagtext);
-	last_if = doEval(parts[0]);
-	if (last_if) {
-		return polyParse(parts[1]);
-	} else {
-		return "";
-	}
-}
-
-function tag_else(tagtext) {
-	if (!last_if) {
-		return polyParse(tagtext);
-	} else {
-		return "";
-	}
-}
-
-function tag_lock(tagtext) {
-	vars['poly_lock'] = true;
-	vars['poly_locktext'] = tagtext;
-	saveVars();
+function tag_unknown(tagtext) {
+	doEval(tagtext);
 	return "";
 }
 
@@ -407,7 +412,3 @@ function tag_unlock(tagtext) {
 	return "";
 }
 
-function tag_unknown(tagtext) {
-	doEval(tagtext);
-	return "";
-}
