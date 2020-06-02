@@ -17,6 +17,7 @@ As they were out on the street he stopped at the place around the corner to get 
 {options coffee_options
 	{option drank_coffee ... went for a regular coffee.}
 	{option drank_decaf ... took the decaf.}
+	{option drank_quadshot ... ordered a quad shot espresso.}
 }
 
 As he drank his coffee he tried not make his body language show how insulted he was that they had sent the girl with him. As if he hadn't always known what was going on just by briefly looking at any technology that was placed in front of him. Some programmer girl they plucked from behind her desk at Polyplot central, probably barely out of university. What the hell could she know about actual adventures?
@@ -27,11 +28,16 @@ As he drank his coffee he tried not make his body language show how insulted he 
 
 {$counter++}
 
-{if $counter >= 3: "This is the {print ordinal($counter)} time we're here," she said softly.} {if $counter == 3: "See that I'm saying third like '3<sup>rd</sup>'? That's a little Javascript function I found online that turns a number into it's 'ordinal'. So I just put it in the book.js file and now I can say the numeric value of any variable like that."}
+{if $counter >= 3: "This is the {print ordinal($counter)} time we're here," she said softly.} {if $counter == 3: "See that I'm saying third like 3<sup>rd</sup>? That's a little Javascript function I found online that turns a number into it's 'ordinal'. So I just put it in the book.js file and now I can say the numeric value of any variable like that."}
 
 {if $room_1 || $room_2 || $room_3: He noticed he could see which doors they had already used because the options for them were purple instead of blue. "I guess everyone knows what that means from their browsers, he thought." Meanwhile the girl was muttering something about a check whether any rooms had been visited so the intro to the hallway could be skipped. He was bored with all this tech stuff. Why can't I just for once have a normal adventure?}
 
-{else He ran up the stairs and shouted "Come on, faster!" as she panted up the second flight of stairs. "I want yo find out how this polyplot scripting stuff works." As she finally reached the top the stairs he turned around. They peered down a marble-clad hallway with some light coming from a skylight at the end. The three doors were conveniently marked with signs with the numbers one, two and three. "Well that's almost too corny", he thought. "What is this, a kid novel?"}
+{else He ran up the stairs and shouted "Come on, faster!" as she panted up the second flight of stairs. "I want yo find out how this polyplot scripting stuff works."
+
+{if $drank_quadshot: His heart pounded really, really fast and hard. Maybe the quad shot espresso had not been such an brilliant idea...} 
+{if $drank_decaf: His head began to hurt and his mood turned slightly pissy and sour. A day without caffeine was not a good day...}
+
+As she finally reached the top the stairs he turned around. They peered down a marble-clad hallway with some light coming from a skylight at the end. The three doors were conveniently marked with signs with the numbers one, two and three. "Well that's almost too corny", he thought. "What is this, a kid novel?"}
 
 {options hallway_options
 	{option door_1 Go to room one: {jump room_1}}
