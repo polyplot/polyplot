@@ -313,6 +313,11 @@ function tag_anchor(tagtext) {
 	return "";
 }
 
+function tag_chapter(tagtext) {
+	var parts = oneSplit(" ", tagtext);
+	return "\n<h2>" + parts[1] + "</h2>\n";
+}
+
 function tag_else(tagtext) {
 	if (!last_if) {
 		return polyParse(tagtext);

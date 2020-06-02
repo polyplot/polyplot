@@ -1,6 +1,6 @@
 {lock You cannot yet revisit choices that are in the past. This is until you get to (one of the) endings of the story. Then you can page back and change any choices to pick up the story from there.} 
 
-# Demonstrating Polyplot
+{chapter start Demonstrating Polyplot}
 
 <h3>(a very short novel)</h3>
 
