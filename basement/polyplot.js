@@ -133,7 +133,6 @@ function debugCount() {
 }
 
 function dbgstr(str) {
-	return str;
 	var ret = str;
 	ret = ret.replace(/\n/g, "\\n");
 	if (ret.length > 170) {
