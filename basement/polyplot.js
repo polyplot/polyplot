@@ -327,13 +327,15 @@ function tag_options(tagtext) {
 	var current_vars = [];
 	polyParse(tagtext);
 	current_options.forEach(function(option){
-		var option_var = oneSplit(":", option)[0];
+		var option_var = oneSplit(" ", option)[0];
 		if (vars[option_var + "_last"]) delete vars[option_var + "_last"];
 	});
 	current_options.forEach(function(option){
-		var parts = oneSplit(":", option);
+		var parts = oneSplit(" ", option);
 		var option_var = parts[0];
-		var option_text = oneSplit("{", parts[1])[0];
+		var parts2 = oneSplit(":", parts[1]);
+		var option_text = parts2[0];
+		var option_cmds = parts2[1];
 		option = parts[1];
 		var href = "javascript:clickOption('" + option_var.trim()
 		  + "', " + thistaglocation + ", " + vars['poly_stop'] + ")";
@@ -341,7 +343,7 @@ function tag_options(tagtext) {
 			got_one = true;
 			ret += '<li class="selected">' + option_text + '</li>\n';
 			vars[option_var + "_last"] = true;
-			polyParse(option);
+			polyParse(option_cmds);
 			delete vars[option_var + "_selected"];
 		} else if (vars[option_var]) {
 			ret += '<li><a class="before" href="' + href + '">' 

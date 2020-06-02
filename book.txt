@@ -15,8 +15,8 @@ They continued chatting about how wonderful their new technology was for what se
 As they were out on the street he stopped at the place around the corner to get a coffee. As he reached in his pocket for some change, some manbunned hipster started listing all the 45 kinds of coffee they had. He always had either regular coffee or decaf on days when regular coffee made him feel too wired. The choice suddenly reminded him of an interactive novel he read.. He wondered briefly what he felt like today and ...
 
 {options
-	{option drank_coffee: ordered a regular coffee.}
-	{option drank_decaf: chose the decaf.}
+	{option drank_coffee ... went for a regular coffee.}
+	{option drank_decaf ... took the decaf.}
 }
 
 As he drank his coffee he tried not make his body language show how insulted he was that they had sent the girl with him. As if he hadn't always known what was going on just by briefly looking at any technology that was placed in front of him. Some programmer girl they plucked from behind her desk at Polyplot central, probably barely out of university. What the hell could she know about actual adventures?
@@ -32,9 +32,9 @@ As he drank his coffee he tried not make his body language show how insulted he 
 {else He ran up the stairs and shouted "Come on, faster!" as she panted up the second flight of stairs. "I want yo find out how this polyplot scripting stuff works." As she finally reached the top the stairs he turned around. They peered down a marble-clad hallway with some light coming from a skylight at the end. The three doors were conveniently marked with signs with the numbers one, two and three. "Well that's almost too corny", he thought. "What is this, a kid novel?"}
 
 {options
-	{option door_1: Go to room one {jump room_1}}
-	{option door_2: Go to room two {jump room_2}}
-	{option door_3: Go to room three {jump room_3}}
+	{option door_1 Go to room one: {jump room_1}}
+	{option door_2 Go to room two: {jump room_2}}
+	{option door_3 Go to room three: {jump room_3}}
 }
 
 
@@ -81,8 +81,8 @@ He walked over to the window and peered down. A good 10 meter drop on concrete, 
 "Dying is the whole point. If you jump out of the window now the story ends, and then you can revisit all your previous choices, it's kinda cool." she said. 
 
 {options
-	{option jump: Oh sure. What the hell. Let's see what happens...{jump death}}
-	{option dont_jump: No way! I'm not dying here just to demo some interactive book-tech!}
+	{option jump Oh sure. What the hell. Let's see what happens...:{jump death}}
+	{option dont_jump No way! I'm not dying here just to demo some interactive book-tech!}
 }
 
 "Nah", he said... "Not now, I don't want to die just yet." He turned around and walked to the door going back to the hallway.
