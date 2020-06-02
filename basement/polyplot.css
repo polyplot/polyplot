@@ -203,7 +203,7 @@ a:link.disabled, a:visited.disabled {
 ul {
 	display: block;
 	background-color: #dddddd;
-	width: 90%;
+	width: auto;
 	margin: 0px 0px;
 	padding: 10px 20px;
 	list-style: none;
