@@ -84,7 +84,6 @@ function toggleDark() {
 		delete vars['poly_dark'];
 	}
 	saveVars();
-//	window.location.reload(true);
 }
 
 function dark() {
@@ -109,7 +108,6 @@ function toggleSerif() {
 		delete vars['poly_serif'];
 	}
 	saveVars();
-//	window.location.reload(true);
 }
 
 function serif() {
