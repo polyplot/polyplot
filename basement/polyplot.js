@@ -8,18 +8,16 @@ const endString = "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
 var currentZoom = 100;
 var minZoom = 80;
 var maxZoom = 140;
-var vars = { 
-	poly_stopcounter: 0, 
-	poly_pointer: 0,
-	poly_stop: false,
-	html: ""
+var book = false;
+var v = { 
+	pp_html_ptrcounter: 0, 
+	pp_html: ""
 };
 var jumping = null;
 var debugCounter = 0;	
 var current_options = [];
 var tags = {};
 var last_if = false;
-var thistaglocation;
 
 function resetBook() {
 	$("input").prop("checked", false);
@@ -29,9 +27,9 @@ function resetBook() {
 
 function startOver() {
 	$("input").prop("checked", false);
-	vars['html'] = "";
-	vars['poly_pointer'] = 0;
-	vars['poly_stop'] = null;
+	v['pp_html'] = "";
+	delete v['pp_book_ptr'];
+	delete v['pp_html_ptr'];
 	saveVars();
 	window.location.reload(true);
 }
@@ -76,12 +74,12 @@ function doZoom() {
 
 function toggleDark() {
 	$("input").prop("checked", false);
-	if (!vars['poly_dark']) {
+	if (!v['pp_dark']) {
 		dark();
-		vars['poly_dark'] = true;
+		v['pp_dark'] = true;
 	} else {
 		light();
-		delete vars['poly_dark'];
+		delete v['pp_dark'];
 	}
 	saveVars();
 }
@@ -100,12 +98,12 @@ function light() {
 
 function toggleSerif() {
 	$("input").prop("checked", false);
-	if (!vars['poly_serif']) {
+	if (!v['pp_serif']) {
 		serif();
-		vars['poly_serif'] = true;
+		v['pp_serif'] = true;
 	} else {
 		sans_serif();
-		delete vars['poly_serif'];
+		delete v['pp_serif'];
 	}
 	saveVars();
 }
@@ -142,56 +140,67 @@ function dbgstr(str) {
 	return ret;
 } 
 
-function newStopNumber() {
-	return ++vars['poly_stopcounter'];
+function newHtmlPtr() {
+	return ++v['pp_html_ptrcounter'];
 }
 
 function loadBook() {
 	console.log("loadBook");
-	if (vars['poly_dark']) { dark(); } else { light(); }
-	if (vars['poly_serif']) { serif(); } else { sans_serif(); }
-	var xmlhttp = new XMLHttpRequest ();
-	xmlhttp.open('GET', 'book.txt', false);
-	xmlhttp.send();
-	var book = xmlhttp.responseText + endString;
-	if (vars['poly_stop']) {
-		var stopcomment = "<!-- " + vars['poly_stop'] + " -->";
-		var found = vars['html'].indexOf(stopcomment);
+	if (v['pp_dark']) { dark(); } else { light(); }
+	if (v['pp_serif']) { serif(); } else { sans_serif(); }
+	if (!book) {
+		var xmlhttp = new XMLHttpRequest ();
+		xmlhttp.open('GET', 'book.txt', false);
+		xmlhttp.send();
+		book = xmlhttp.responseText + endString;
+	}
+	if (v['pp_html_ptr'] && v['pp_book_ptr'] != 'end') {
+		var html_ptr_comment = "<!-- " + v['pp_html_ptr'] + " -->";
+		var found = v['pp_html'].indexOf(html_ptr_comment);
 		if (found != -1) {
-			vars['html'] = vars['html'].substring(0, found);
-			console.log("skipped to: " + stopcomment);
+			v['pp_html'] = v['pp_html'].substring(0, found);
+			console.log("skipped to html_ptr: " + html_ptr_comment);
 		}
 	}
 	// Replace \{ and \} with unicode braces that don't trigger polyParse() 
 	book = book.replace ("\\{", ' ❴');
 	book = book.replace ("\\}", '❵ ');
 	// Run polyParse on whole thing	
-	vars['html'] += polyParse(book, true);
+	v['pp_html'] += polyParse(book, true);
 	// Put back the escaped curly braces
-	vars['html'] = vars['html'].replace (' ❴', '{');
-	vars['html'] = vars['html'].replace ('❵ ', '}');	
-	// Headers
-	vars['html'] = vars['html'].replace (/^# (.+)$/mg, '<h2>$1</h2>\n');
+	v['pp_html'] = v['pp_html'].replace (' ❴', '{');
+	v['pp_html'] = v['pp_html'].replace ('❵ ', '}');
 	// Everything that wasn't a tag becomes <p>
-	vars['html'] = vars['html'].replace (/^([^<>]\w+.*)$/mg, '<p>$1</p>\n');
-	$('#booktext').html(vars['html']);
+	v['pp_html'] = v['pp_html'].replace (/^([^<>]\w+.*)$/mg, '<p>$1</p>\n');
+	$('#booktext').html(v['pp_html']);
 	saveVars();
 }
 
 function saveVars() {
-	window.localStorage.setItem('vars', JSON.stringify(vars));
+	window.localStorage.setItem('v', JSON.stringify(v));
 }
 	
 function loadVars() {
-	var v = window.localStorage.getItem('vars');
-	if (v) {
-		vars = JSON.parse(v);
+	var vars = window.localStorage.getItem('v');
+	if (vars) {
+		v = JSON.parse(vars);
 		console.log("got vars");
 	}
 }
 
 function killVars() {
 	window.localStorage.clear();
+}
+
+function idLocation(id) {
+	if (id == 'end') return book.length;
+	var re = new RegExp('\\{(?:options|anchor) ' + id + '[\\W$]');
+	var x = book.search(re);
+	if (x == -1) {
+		console.log("ID not found: " + id);
+		return 0;
+	}
+	return x;
 }
 
 function polyParse(text, root=false) {
@@ -204,14 +213,15 @@ function polyParse(text, root=false) {
 	}
 	var ret = "";
 	var index = 0;
-	if (root) index = vars['poly_pointer'];
+	if (root && v['pp_book_ptr']) {
+		index = idLocation(v['pp_book_ptr'])
+	}
 	while(true){
 		var tagstart = text.indexOf("{", index);
 		if (tagstart == -1) {
 			ret += copied(text.substr(index));
 			break;
 		} else {
-			if (root) thistaglocation = tagstart;
 			ret += copied(text.substring(index, tagstart));
 			var tagend = tagstart + 1;
 			var recursion = 1;
@@ -236,13 +246,7 @@ function polyParse(text, root=false) {
 						  + dbgstr(text));
 						return ret + endString;
 					}
-					var re = new RegExp('\\{anchor\\s+' + jumping + '\\s*\\}');
-					var begin = text.search(re);
-					if (begin == -1) {
-						throw new Error('Jump target "' + jumping 
-						  + '" not found');
-					}
-					index = text.indexOf('}', begin) + 1;	
+					index = idLocation(jumping);	
 					jumping = null;
 				} else {
 					break;
@@ -267,23 +271,23 @@ function copied(str) {
 }
 
 function doEval(script) {
-	var modscr = '"use strict";' + script.replace(/\$(\w+)/g, "vars['$1']");
+	var modscr = '"use strict";' + script.replace(/\$(\w+)/g, "v['$1']");
 	//console.log("eval: " + modscr);
 	return eval(modscr);
 }
 
-function clickOption(optionvar, pointer, stopnr) {
-	if (vars['poly_lock'] && stopnr < vars['poly_stop']) {
-		window.alert(vars['poly_locktext']);
+function clickOption(optionvar, book_ptr, html_ptr) {
+	if (v['pp_lock'] && html_ptr < v['pp_html_ptr']) {
+		window.alert(v['pp_locktext']);
 		return;
 	}
-	vars['poly_pointer'] = pointer;
-	vars['poly_stop'] = stopnr;
-	vars[optionvar + "_selected"] = true;
-	vars[optionvar + "_last"] = true;
-	vars[optionvar] = true;
+	v['pp_book_ptr'] = book_ptr;
+	v['pp_html_ptr'] = html_ptr;
+	v[optionvar + "_selected"] = true;
+	v[optionvar + "_last"] = true;
+	v[optionvar] = true;
 	saveVars();
-	loadBook(pointer, stopnr);
+	loadBook(book_ptr, html_ptr);
 }
 
 function tagParse(tag) {
@@ -302,8 +306,13 @@ function tagParse(tag) {
 	} else {
 		var ret = tag_unknown(tag);
 	}
-	console.log(fnid + " returns: " + dbgstr(ret));
-	return ret;
+	if ($.type(ret) === 'string') {
+		console.log(fnid + " exits, returns: " + dbgstr(ret));
+		return ret;
+	} else {
+		console.log(fnid + " exits.");
+		return "";
+	}
 }
 
 // Below are all the tags shipped with Polyplot. You can make your own
@@ -321,27 +330,23 @@ function tag_chapter(tagtext) {
 function tag_else(tagtext) {
 	if (!last_if) {
 		return polyParse(tagtext);
-	} else {
-		return "";
 	}
 }
 
 function tag_end(tagtext) {
 	console.log("endtag");
 	jumping = 'end';
-	return "";
+	v['pp_book_ptr'] = 'end';
 }
 
 function tag_lock(tagtext) {
-	vars['poly_lock'] = true;
-	vars['poly_locktext'] = tagtext;
+	v['pp_lock'] = true;
+	v['pp_locktext'] = tagtext;
 	saveVars();
-	return "";
 }
 
 function tag_option(tagtext) {
 	current_options.push(tagtext);
-	return "";
 }
 
 function tag_if(tagtext) {
@@ -349,31 +354,29 @@ function tag_if(tagtext) {
 	last_if = doEval(parts[0]);
 	if (last_if) {
 		return polyParse(parts[1]);
-	} else {
-		return "";
 	}
 }
 
 function tag_jump(tagtext) {
 	jumping = tagtext;
-	vars[tagtext] = true;
-	return "";
+	v[tagtext] = true;
 }
 
 function tag_options(tagtext) {
-	vars['poly_stop'] = newStopNumber();
-	vars['poly_pointer'] = thistaglocation;
-	console.log("setting pointer to: " + thistaglocation);
+	var options_id = oneSplit(/\s/m, tagtext)[0];
+	v['pp_html_ptr'] = newHtmlPtr();
+	v['pp_book_ptr'] = options_id;
+	console.log("setting book_ptr to: " + options_id);
 	saveVars();
-	var ret = "\n<!-- " + vars['poly_stop'] + " -->\n";
+	var ret = "\n<!-- " + v['pp_html_ptr'] + " -->\n";
 	ret += "<ul>\n"
 	var got_one = false;
 	current_options = [];
-	var current_vars = [];
+	var current_v = [];
 	polyParse(tagtext);
 	current_options.forEach(function(option){
 		var option_var = oneSplit(" ", option)[0];
-		if (vars[option_var + "_last"]) delete vars[option_var + "_last"];
+		if (v[option_var + "_last"]) delete v[option_var + "_last"];
 	});
 	current_options.forEach(function(option){
 		var parts = oneSplit(" ", option);
@@ -382,15 +385,15 @@ function tag_options(tagtext) {
 		var option_text = parts2[0];
 		var option_cmds = parts2[1];
 		option = parts[1];
-		var href = "javascript:clickOption('" + option_var.trim()
-		  + "', " + thistaglocation + ", " + vars['poly_stop'] + ")";
-		if (vars[option_var + "_selected"]) {
+		var href = "javascript:clickOption('" + option_var + "', '" 
+		  + options_id + "', " + v['pp_html_ptr'] + ")";
+		if (v[option_var + "_selected"]) {
 			got_one = true;
 			ret += '<li class="selected">' + option_text + '</li>\n';
-			vars[option_var + "_last"] = true;
+			v[option_var + "_last"] = true;
 			polyParse(option_cmds);
-			delete vars[option_var + "_selected"];
-		} else if (vars[option_var]) {
+			delete v[option_var + "_selected"];
+		} else if (v[option_var]) {
 			ret += '<li><a class="before" href="' + href + '">' 
 			  + option_text + '</a></li>\n';
 		} else {
@@ -408,12 +411,9 @@ function tag_print(tagtext) {
 
 function tag_unknown(tagtext) {
 	doEval(tagtext);
-	return "";
 }
 
 function tag_unlock(tagtext) {
-	vars['poly_lock'] = false;
+	v['pp_lock'] = false;
 	saveVars();
-	return "";
 }
-

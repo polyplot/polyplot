@@ -14,7 +14,7 @@ They continued chatting about how wonderful their new technology was for what se
 
 As they were out on the street he stopped at the place around the corner to get a coffee. As he reached in his pocket for some change, some manbunned hipster started listing all the 45 kinds of coffee they had. He always had either regular coffee or decaf on days when regular coffee made him feel too wired. The choice suddenly reminded him of an interactive novel he read.. He wondered briefly what he felt like today and ...
 
-{options
+{options coffee_options
 	{option drank_coffee ... went for a regular coffee.}
 	{option drank_decaf ... took the decaf.}
 }
@@ -27,11 +27,13 @@ As he drank his coffee he tried not make his body language show how insulted he 
 
 {$counter++}
 
-{if $room_1 || $room_2 || $room_3: Once they were back in the hallway, he noticed he could see which doors they had already used because the options for them were purple instead of blue. "I guess everyone knows what that means from their browsers, he thought." Meanwhile the girl was muttering something about a check whether any rooms had been visited so the intro to the hallway could be skipped. He was bored with all this tech stuff. Why can't I just for once have a normal adventure?}
+{if $counter >= 3: "This is the {print ordinal($counter)} time we're here," she said softly.} {if $counter == 3: "See that I'm saying third like '3<sup>rd</sup>'? That's a little Javascript function I found online that turns a number into it's 'ordinal'. So I just put it in the book.js file and now I can say the numeric value of any variable like that."}
+
+{if $room_1 || $room_2 || $room_3: He noticed he could see which doors they had already used because the options for them were purple instead of blue. "I guess everyone knows what that means from their browsers, he thought." Meanwhile the girl was muttering something about a check whether any rooms had been visited so the intro to the hallway could be skipped. He was bored with all this tech stuff. Why can't I just for once have a normal adventure?}
 
 {else He ran up the stairs and shouted "Come on, faster!" as she panted up the second flight of stairs. "I want yo find out how this polyplot scripting stuff works." As she finally reached the top the stairs he turned around. They peered down a marble-clad hallway with some light coming from a skylight at the end. The three doors were conveniently marked with signs with the numbers one, two and three. "Well that's almost too corny", he thought. "What is this, a kid novel?"}
 
-{options
+{options hallway_options
 	{option door_1 Go to room one: {jump room_1}}
 	{option door_2 Go to room two: {jump room_2}}
 	{option door_3 Go to room three: {jump room_3}}
@@ -80,7 +82,7 @@ He walked over to the window and peered down. A good 10 meter drop on concrete, 
 
 "Dying is the whole point. If you jump out of the window now the story ends, and then you can revisit all your previous choices, it's kinda cool." she said. 
 
-{options
+{options jump_options
 	{option jump Oh sure. What the hell. Let's see what happens...:{jump death}}
 	{option dont_jump No way! I'm not dying here just to demo some interactive book-tech!}
 }
