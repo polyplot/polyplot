@@ -1,0 +1,36 @@
+<!-- Polyplot is copyright 2020 by Polyplot Berlin -->
+
+<head>
+	<link href="polyplot.css" rel="stylesheet">
+	<script type="text/javascript" src="jquery.min.js"></script>	
+</head>
+<body>
+
+<div id="variables"></div>
+
+<script>
+
+	var vars = window.localStorage.getItem('v');
+	var keys = [];
+	if (!vars) {
+		console.log("variables window could not load from local storage");
+	} else {
+		v = JSON.parse(vars);
+		var content = "<table>\n";
+		for (let vname in v) {
+			if (! vname.startsWith("pp_")) keys.push(vname);
+		}
+		keys.sort();
+		for (let idx in keys) {
+			content += "<tr><td class='name'>$" + keys[idx] 
+			  + "</td><td class='value'>" + v[keys[idx]] + "</td></tr>";
+		}
+		content += "</table>";
+		$('#variables').html(content);
+	}
+
+
+</script>
+
+
+</body>

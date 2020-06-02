@@ -3,6 +3,9 @@
 
 "use strict";
 
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
 const endString = "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
 
 var currentZoom = 100;
@@ -178,8 +181,13 @@ function loadBook() {
 
 function saveVars() {
 	window.localStorage.setItem('v', JSON.stringify(v));
+	if (urlParams.has('vars')) variableWindow();
 }
-	
+
+function variableWindow() {
+	window.open('basement/variable_window.html','variables','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=350');
+}
+
 function loadVars() {
 	var vars = window.localStorage.getItem('v');
 	if (vars) {
