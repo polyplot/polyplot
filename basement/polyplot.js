@@ -88,14 +88,14 @@ function toggleDark() {
 }
 
 function dark() {
-	$('#booktext').css('background-color', 'black');
-	$('#booktext').css('color', 'white');
+	$('#booktext').addClass('dark');
+	$('#booktext').removeClass('light');
 	$('#dark').html('Light Mode');
 }
 
 function light() {
-	$('#booktext').css('background-color', 'white');
-	$('#booktext').css('color', 'black');
+	$('#booktext').addClass('light');
+	$('#booktext').removeClass('dark');
 	$('#dark').html('Dark Mode');
 }
 
@@ -113,19 +113,19 @@ function toggleSerif() {
 }
 
 function serif() {
-	$('#booktext').css('font-family', '"Georgia", "Times New Roman", Times, serif');
+	$('#booktext').addClass('serif');
+	$('#booktext').removeClass('sans');
 	$('#serif').html('Sans-Serif');
 }
 
 function sans_serif() {
-	$('#booktext').css('font-family', 'Helvetica, Arial, sans-serif');
+	$('#booktext').addClass('sans');
+	$('#booktext').removeClass('serif');
 	$('#serif').html('Serif');
 }
 
 $(document).ready(function() {
 	loadVars();
-	if (vars['poly_dark']) dark();
-	if (vars['poly_serif']) serif();
 	loadBook();
 });
 
@@ -151,6 +151,8 @@ function newStopNumber() {
 
 function loadBook() {
 	console.log("loadBook");
+	if (vars['poly_dark']) { dark(); } else { light(); }
+	if (vars['poly_serif']) { serif(); } else { sans_serif(); }
 	var xmlhttp = new XMLHttpRequest ();
 	xmlhttp.open('GET', 'book.txt', false);
 	xmlhttp.send();

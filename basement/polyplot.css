@@ -134,11 +134,26 @@ nav ul {
 	height: 100%;
 	overflow-y: scroll;
 	padding: 30px;
-	font-family: Helvetica, Arial, sans-serif;
 	font-size: 19px;
 	z-index: -1;
+}
+
+#booktext.sans {
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+#booktext.serif {
+	font-family: "Georgia", "Times New Roman", Times, serif;
+}
+
+#booktext.light {
 	background-color: white;
 	color: black;
+}
+
+#booktext.dark {
+	background-color: black;
+	color: white;
 }
 
 @media screen and (max-width: 800px) {
