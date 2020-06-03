@@ -12,7 +12,8 @@ var currentZoom = 100;
 var minZoom = 80;
 var maxZoom = 140;
 var book = false;
-var v = { 
+var v = {
+	pp_scroll_ptr: 0,
 	pp_html_ptrcounter: 0, 
 	pp_html: ""
 };
@@ -21,6 +22,26 @@ var debugCounter = 0;
 var current_options = [];
 var tags = {};
 var last_if = false;
+var didScroll = false;
+
+$(document).ready(function() {
+	loadVars();
+	loadBook();
+	saveVars();
+});
+
+$('#booktext').scroll(function() {
+	didScroll = true;
+});
+
+setInterval(function() {
+    if ( didScroll ) {
+        didScroll = false;
+		v['pp_scroll_ptr'] = scrollPosition();
+		saveVars();
+		console.log("stored pos");
+    }
+}, 2000);
 
 function resetBook() {
 	$("input").prop("checked", false);
@@ -60,19 +81,30 @@ function fontSmaller(){
 }
 
 function doZoom() {
+	var pos = scrollPosition();
+	$('#booktext').css('zoom', currentZoom + '%');
+	scrollPosition(pos);
+}
+
+function scrollPosition(pos=null) {
 	var scroll = $(window).scrollTop();
 	var elements = $("#booktext").children();
 	var el;
-	for (var i=0; i<elements.length; i++) {
-		el = $(elements[i]);
-		if (el.offset().top >= scroll && el.is(':visible')){
-			break;
+	if (pos === null) {
+		for (var i=0; i<elements.length; i++) {
+			el = $(elements[i]);
+			if (el.offset().top >= scroll && el.is(':visible')){
+				return i;
+			}
 		}
+	} else {
+		if (pos >= elements.length) return false;
+		el = $(elements[pos]);
+		setTimeout(function(){
+			el[0].scrollIntoView();
+		},50);		
+		return true;
 	}
-	$('#booktext').css('zoom', currentZoom + '%');
-	setTimeout(function(){
-		el[0].scrollIntoView();
-	},50);
 }
 
 function toggleDark() {
@@ -123,12 +155,6 @@ function sans_serif() {
 	$('#serif').html('Serif');
 }
 
-$(document).ready(function() {
-	loadVars();
-	loadBook();
-});
-
-
 function debugCount() {
 	return ++debugCounter;
 }
@@ -176,6 +202,7 @@ function loadBook() {
 	// Everything that wasn't a tag becomes <p>
 	v['pp_html'] = v['pp_html'].replace (/^([^<>]\w+.*)$/mg, '<p>$1</p>\n');
 	$('#booktext').html(v['pp_html']);
+	scrollPosition(v['pp_scroll_ptr']);
 	saveVars();
 }
 
