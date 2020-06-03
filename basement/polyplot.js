@@ -337,7 +337,11 @@ function tagParse(tag) {
 		var func = false;
 	}	
 	if (func) {
-		var ret = func(parts[1]);
+		if (parts[1] != "") {
+			var ret = func(parts[1]);
+		} else {
+			var ret = func();
+		}
 	} else {
 		var ret = tag_unknown(tag);
 	}
@@ -354,12 +358,14 @@ function tagParse(tag) {
 // tags by just creating a function like one of these in the book.js file.
 
 function tag_anchor(tagtext) {
-	return "";
 }
 
 function tag_chapter(tagtext) {
 	var parts = oneSplit(" ", tagtext);
 	return "\n<h2>" + parts[1] + "</h2>\n";
+}
+
+function tag_comment(tagtext) {
 }
 
 function tag_else(tagtext) {
