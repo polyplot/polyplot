@@ -460,6 +460,24 @@ function tag_print(tagtext) {
 	return doEval(tagtext);
 }
 
+function tag_span(tagtext) {
+	var parts = oneSplit(/\s/m, tagtext);
+	var cssclass = parts[0];
+	var span_open = '<span class="' + cssclass +'">';
+	var span_close = "</span>";
+	var ret = parts[1];
+	// If the 'white-space' css property for our span includes 'pre', we
+	// replace the newlines with a special token, to be put back in later
+	// processing.
+	var el = $(span_open + span_close);
+	$("#booktext").append(el);
+ 	if ($("." + cssclass).css('white-space').includes("pre")) {
+ 		ret = ret.replace(/\n/g, "↲")
+ 	}
+ 	$("#booktext").remove(el);
+	return '<span class="' + cssclass +'">' + polyParse(ret) + '</span>';
+}
+
 function tag_unknown(tagtext) {
 	doEval(tagtext);
 }
