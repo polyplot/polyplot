@@ -27,7 +27,8 @@ var didScroll = false;
 $(document).ready(function() {
 	loadVars();
 	loadBook();
-	saveVars();
+	if (v['pp_dark']) { dark(); } else { light(); }
+	if (v['pp_serif']) { serif(); } else { sans_serif(); }
 });
 
 $('#booktext').scroll(function() {
@@ -173,37 +174,46 @@ function newHtmlPtr() {
 	return ++v['pp_html_ptrcounter'];
 }
 
-function loadBook() {
+function loadBook(book_ptr=null, html_ptr=null) {
 	console.log("loadBook");
-	if (v['pp_dark']) { dark(); } else { light(); }
-	if (v['pp_serif']) { serif(); } else { sans_serif(); }
-	if (!book) {
-		var xmlhttp = new XMLHttpRequest ();
-		xmlhttp.open('GET', 'book.txt', false);
-		xmlhttp.send();
-		book = xmlhttp.responseText + endString;
-	}
-	if (v['pp_html_ptr'] && v['pp_book_ptr'] != 'end') {
-		var html_ptr_comment = "<!-- " + v['pp_html_ptr'] + " -->";
-		var found = v['pp_html'].indexOf(html_ptr_comment);
-		if (found != -1) {
-			v['pp_html'] = v['pp_html'].substring(0, found);
-			console.log("skipped to html_ptr: " + html_ptr_comment);
+	if (! html_ptr && v['pp_html'] != "") {
+		console.log("new load");
+		$('#booktext').html(v['pp_html']);
+		scrollPosition(v['pp_scroll_ptr']);
+	} else {
+
+		if (!book) {
+			var xmlhttp = new XMLHttpRequest ();
+			xmlhttp.open('GET', 'book.txt', false);
+			xmlhttp.send();
+			book = xmlhttp.responseText + endString;
+			// Replace \{ and \} with unicode braces that don't trigger polyParse() 
+			book = book.replace(/\\\{/g, ' ❴');
+			book = book.replace(/\\\}/g, '❵ ');
 		}
+
+		if (v['pp_book_ptr'] != 'end') {
+			var new_html = polyParse(book, true);
+			// Put back the escaped curly braces
+			new_html = new_html.replace(/ ❴/g, '{');
+			new_html = new_html.replace(/❵ /g, '}');
+			// Everything that wasn't a tag becomes <p>
+			new_html = new_html.replace(/^(.*?\w+.*?)$/gm, '<p>$1</p>');
+	//		new_html = new_html.replace(/^<p>(<(ul|li).*?)<\/p>$/gm, '$1');
+			new_html = new_html.replace(/↲/g, "\n");
+			console.log(new_html);
+			if (html_ptr) {
+				var id = "#html_ptr_" + html_ptr;
+				$(id).nextAll().remove();
+				$(id).replaceWith(new_html);
+			} else {
+				$("#booktext").html(new_html);
+			}
+			$('p:empty').remove();
+			v['pp_html'] = $("#booktext").html();
+		}
+		saveVars();
 	}
-	// Replace \{ and \} with unicode braces that don't trigger polyParse() 
-	book = book.replace ("\\{", ' ❴');
-	book = book.replace ("\\}", '❵ ');
-	// Run polyParse on whole thing	
-	v['pp_html'] += polyParse(book, true);
-	// Put back the escaped curly braces
-	v['pp_html'] = v['pp_html'].replace (' ❴', '{');
-	v['pp_html'] = v['pp_html'].replace ('❵ ', '}');
-	// Everything that wasn't a tag becomes <p>
-	v['pp_html'] = v['pp_html'].replace (/^([^<>]\w+.*)$/mg, '<p>$1</p>\n');
-	$('#booktext').html(v['pp_html']);
-	scrollPosition(v['pp_scroll_ptr']);
-	saveVars();
 }
 
 function saveVars() {
@@ -354,6 +364,7 @@ function tagParse(tag) {
 	}
 }
 
+
 // Below are all the tags shipped with Polyplot. You can make your own
 // tags by just creating a function like one of these in the book.js file.
 
@@ -409,8 +420,7 @@ function tag_options(tagtext) {
 	v['pp_book_ptr'] = options_id;
 	console.log("setting book_ptr to: " + options_id);
 	saveVars();
-	var ret = "\n<!-- " + v['pp_html_ptr'] + " -->\n";
-	ret += "<ul>\n"
+	var ret = "<ul id='html_ptr_" + v['pp_html_ptr'] + "'>\n"
 	var got_one = false;
 	current_options = [];
 	var current_v = [];
