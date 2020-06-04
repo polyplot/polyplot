@@ -8,6 +8,7 @@ body, hmtl {
   overscroll-behavior: none;
   padding: 0;
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 nav {
@@ -131,8 +132,12 @@ nav ul {
 
 #booktext {
 	position: fixed;
-	height: 100%;
+	width: calc(100% - 60px);
+	top: 50px;
+	left: 0;
+	height: calc(100% - 100px);
 	overflow-y: scroll;
+	overflow-x: hidden;
 	padding: 30px;
 	font-size: 19px;
 	z-index: -1;
@@ -159,6 +164,7 @@ nav ul {
 @media screen and (max-width: 800px) {
   #booktext {
 	padding: 20px 7px;
+	width: calc(100% - 14px);
   }
 }
 
@@ -211,7 +217,7 @@ ul {
 	display: block;
 	background-color: #dddddd;
 	width: auto;
-	margin: 0px 0px;
+	margin: 15px 0px;
 	padding: 10px 20px;
 	list-style: none;
 }
