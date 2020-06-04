@@ -9,6 +9,12 @@ body, hmtl {
   padding: 0;
   margin: 0;
   overflow-wrap: anywhere;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+	font-size: 18px;
 }
 
 nav {
@@ -25,6 +31,7 @@ nav ul a {
   text-decoration: none;
   color: #1E1E23;
   opacity: 1;
+  font-size: 15px;
   font-family: 'verdana', sans-serif;
   font-weight: 800;
   transition: 200ms;
@@ -116,7 +123,7 @@ nav ul {
 }
 
 #menu li {
-  padding: 15px 0;
+  padding: 12px 0;
   transition-delay: 2s;
   font-family: "Verdana";
 }
@@ -135,12 +142,18 @@ nav ul {
 	width: calc(100% - 60px);
 	top: 50px;
 	left: 0;
-	height: calc(100% - 100px);
+	height: calc(100% - 110px);
 	overflow-y: scroll;
 	overflow-x: hidden;
 	padding: 30px;
-	font-size: 19px;
 	z-index: -1;
+}
+
+@media screen and (max-width: 800px) {
+  #booktext {
+	padding: 30px 7px;
+	width: calc(100% - 14px);
+  }
 }
 
 #booktext.sans {
@@ -161,13 +174,6 @@ nav ul {
 	color: white;
 }
 
-@media screen and (max-width: 800px) {
-  #booktext {
-	padding: 20px 7px;
-	width: calc(100% - 14px);
-  }
-}
-
 #variables td {
 	font-family: Helvetica, Arial, sans-serif;
 	padding-left: 5px;
@@ -185,6 +191,7 @@ a.fontsize {
 	padding-right: 30px;
 	vertical-align: middle;
 	text-decoration: none;
+	visibility: hidden;
 }
 
 a#smaller {
@@ -200,17 +207,17 @@ a#bigger {
 
 
 h2 {
-	font-size: 27px;
+	font-size: 1.4em;
 	font-weight: bold;
 }
 
 h3 {
-	font-size: 23px;
+	font-size: 1.2em;
 	font-weight: bold;
 }
 
 a:link.disabled, a:visited.disabled {
-	color: #888888 important;
+	color: #888888 !important;
 }
 
 ul {

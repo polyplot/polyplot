@@ -5,17 +5,15 @@
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
-
 const endString = "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
+const zoomLevels = [15, 18, 22, 25]
 
-var currentZoom = 100;
-var minZoom = 80;
-var maxZoom = 140;
 var book = false;
 var v = {
 	pp_scroll_ptr: 0,
 	pp_html_ptrcounter: 0, 
-	pp_html: ""
+	pp_html: "",
+	pp_zoom: 1
 };
 var jumping = null;
 var debugCounter = 0;	
@@ -29,6 +27,13 @@ $(document).ready(function() {
 	loadBook();
 	if (v['pp_dark']) { dark(); } else { light(); }
 	if (v['pp_serif']) { serif(); } else { sans_serif(); }
+	doZoom(v['pp_zoom']);
+	if (navigator.userAgent.indexOf( "Mobile" ) !== -1 || 
+	  navigator.userAgent.indexOf( "iPhone" ) !== -1 || 
+	  navigator.userAgent.indexOf( "Android" ) !== -1 || 
+	  navigator.userAgent.indexOf( "Windows Phone" ) !== -1) {
+	  	$('a.fontsize').css('visibility', 'visible');
+	}
 });
 
 $('#booktext').scroll(function() {
@@ -60,30 +65,30 @@ function startOver() {
 }
 
 function fontBigger(){
-	if (currentZoom < maxZoom) {
-		currentZoom += 20;
-		doZoom();
+	if (v['pp_zoom'] < zoomLevels.length - 1) {
+		doZoom(++v['pp_zoom']);
 		$("#smaller").removeClass("disabled");
+		saveVars();
 	}
-	if (currentZoom >= maxZoom) {
+	if (v['pp_zoom'] >= zoomLevels.length - 1) {
 		$("#bigger").addClass("disabled");
 	} 
 }
 
 function fontSmaller(){
-	if (currentZoom > minZoom) {
-		currentZoom -= 20;
-		doZoom();
+	if (v['pp_zoom'] > 0) {
+		doZoom(--v['pp_zoom']);
 		$("#bigger").removeClass("disabled");
+		saveVars();
 	}
-	if (currentZoom <= minZoom) {
+	if (v['pp_zoom'] <= 0) {
 		$("#smaller").addClass("disabled");
 	}     	
 }
 
-function doZoom() {
+function doZoom(zoomlevel) {
 	var pos = scrollPosition();
-	$('#booktext').css('zoom', currentZoom + '%');
+	$('#booktext').css('font-size', zoomLevels[zoomlevel] + 'px');
 	scrollPosition(pos);
 }
 
