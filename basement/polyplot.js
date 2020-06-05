@@ -3,6 +3,7 @@
 
 "use strict";
 
+const navheight = 50;
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const endString = "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
@@ -10,7 +11,8 @@ const zoomLevels = [15, 18, 22, 25]
 
 var book = false;
 var v = {
-	pp_scroll_ptr: 0,
+	// Don't ask about the 48. Did I mention how I hate CSS and browsers?
+	pp_scroll_ptr: [0, 48, window.innerWidth],
 	pp_html_ptrcounter: 0, 
 	pp_html: "",
 	pp_zoom: 1
@@ -99,21 +101,27 @@ function scrollPosition(pos=null) {
 	if (pos === null) {
 		for (var i=0; i<elements.length; i++) {
 			el = $(elements[i]);
-			if (el.offset().top >= scroll && el.is(':visible')){
-				console.log("scrollPosition read: " + i);
-				return i;
+			var overshoot = el.offset().top - scroll - navheight
+			if (overshoot >=0 && el.is(':visible')){
+				var ret = [i, overshoot, window.innerWidth];
+				console.log("scrollPosition read: " + ret);
+				return ret;
 			}
 		}
 	} else {
-		if (pos >= elements.length) {
-			console.log("scrollPosition attempted to go beyond: " + i);
+		if (pos[0] >= elements.length) {
+			console.log("scrollPosition attempted to go beyond: " + pos[0]);
 			return false;
 		}
-		el = $(elements[pos]);
-		console.log("scrollPosition go to: " + pos);
+		el = $(elements[pos[0]]);
 		setTimeout(function(){
 			el[0].scrollIntoView();
+			if (window.innerWidth == pos[2]) {
+				var finalPos = $("#booktext").scrollTop() - pos[1]; 
+				$("#booktext").scrollTop(finalPos);
+			}
 		},50);		
+		console.log("scrollPosition go to: " + pos);
 		return true;
 	}
 }
