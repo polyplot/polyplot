@@ -24,10 +24,10 @@ var didScroll = false;
 
 $(document).ready(function() {
 	loadVars();
+	doZoom(v['pp_zoom']);
 	loadBook();
 	if (v['pp_dark']) { dark(); } else { light(); }
 	if (v['pp_serif']) { serif(); } else { sans_serif(); }
-	doZoom(v['pp_zoom']);
 	if (navigator.userAgent.indexOf( "Mobile" ) !== -1 || 
 	  navigator.userAgent.indexOf( "iPhone" ) !== -1 || 
 	  navigator.userAgent.indexOf( "Android" ) !== -1 || 
@@ -100,12 +100,17 @@ function scrollPosition(pos=null) {
 		for (var i=0; i<elements.length; i++) {
 			el = $(elements[i]);
 			if (el.offset().top >= scroll && el.is(':visible')){
+				console.log("scrollPosition read: " + i);
 				return i;
 			}
 		}
 	} else {
-		if (pos >= elements.length) return false;
+		if (pos >= elements.length) {
+			console.log("scrollPosition attempted to go beyond: " + i);
+			return false;
+		}
 		el = $(elements[pos]);
+		console.log("scrollPosition go to: " + pos);
 		setTimeout(function(){
 			el[0].scrollIntoView();
 		},50);		
@@ -184,9 +189,7 @@ function loadBook(book_ptr=null, html_ptr=null) {
 	if (! html_ptr && v['pp_html'] != "") {
 		console.log("new load");
 		$('#booktext').html(v['pp_html']);
-		scrollPosition(v['pp_scroll_ptr']);
 	} else {
-
 		if (!book) {
 			var xmlhttp = new XMLHttpRequest ();
 			xmlhttp.open('GET', 'book.txt', false);
@@ -196,15 +199,13 @@ function loadBook(book_ptr=null, html_ptr=null) {
 			book = book.replace(/\\\{/g, ' ❴');
 			book = book.replace(/\\\}/g, '❵ ');
 		}
-
 		if (v['pp_book_ptr'] != 'end') {
 			var new_html = polyParse(book, true);
 			// Put back the escaped curly braces
 			new_html = new_html.replace(/ ❴/g, '{');
 			new_html = new_html.replace(/❵ /g, '}');
-			// Everything that wasn't a tag becomes <p>
+			// Every line that has something on it becomes its own <p>
 			new_html = new_html.replace(/^(.*?\w+.*?)$/gm, '<p>$1</p>');
-	//		new_html = new_html.replace(/^<p>(<(ul|li).*?)<\/p>$/gm, '$1');
 			new_html = new_html.replace(/↲/g, "\n");
 			console.log(new_html);
 			if (html_ptr) {
@@ -219,6 +220,7 @@ function loadBook(book_ptr=null, html_ptr=null) {
 		}
 		saveVars();
 	}
+	if (! html_ptr) scrollPosition(v['pp_scroll_ptr']);
 }
 
 function saveVars() {
