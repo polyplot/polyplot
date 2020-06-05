@@ -11,7 +11,8 @@ const zoomLevels = [15, 18, 22, 25]
 
 const mobile_ua_strings = /(?:Mobile|iPhone|iPad|Android|Windows Phone)/;
 var mobile = mobile_ua_strings.test(navigator.userAgent);
-if (navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)) mobile = true;
+// Sneaky new iPads pretend to be Macs
+if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) mobile = true;
 
 var book = false;
 var v = {
