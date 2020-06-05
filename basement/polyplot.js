@@ -215,6 +215,9 @@ function loadBook(book_ptr=null, html_ptr=null) {
 			} else {
 				$("#booktext").html(new_html);
 			}
+			// The DOM unwraps some tags from their wrapping <p>'s, Leaving
+			// those empty. A way to only wrap what needs to be wrapped would
+			// be cleaner, but is beyond regex and needs a parsing step.
 			$('p:empty').remove();
 			v['pp_html'] = $("#booktext").html();
 		}
