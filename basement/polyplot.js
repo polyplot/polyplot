@@ -22,7 +22,7 @@ var debugCounter = 0;
 var current_options = [];
 var tags = {};
 var last_if = false;
-var didScroll = false;
+var scrolltimer = null;
 
 $(document).ready(function() {
 	loadVars();
@@ -39,17 +39,13 @@ $(document).ready(function() {
 });
 
 $('#booktext').scroll(function() {
-	didScroll = true;
-});
-
-setInterval(function() {
-    if ( didScroll ) {
-        didScroll = false;
+	if (scrolltimer) window.clearTimeout(scrolltimer);
+	scrolltimer = setTimeout(function() {
 		v['pp_scroll_ptr'] = scrollPosition();
 		saveVars();
 		console.log("stored pos");
-    }
-}, 2000);
+	}, 1000);
+});
 
 function resetBook() {
 	$("input").prop("checked", false);
