@@ -10,7 +10,8 @@ const endString = "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
 const zoomLevels = [15, 18, 22, 25]
 
 const mobile_ua_strings = /(?:Mobile|iPhone|iPad|Android|Windows Phone)/;
-const mobile = mobile_ua_strings.test(navigator.userAgent);
+var mobile = mobile_ua_strings.test(navigator.userAgent);
+if (navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)) mobile = true;
 
 var book = false;
 var v = {
