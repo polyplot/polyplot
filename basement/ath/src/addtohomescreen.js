@@ -39,7 +39,7 @@ function ath (options) {
 // message in all supported languages
 ath.intl = {
 	en_us: {
-		ios: '<br>Offline reading? Full-screen?<br>Install the app in 3 seconds!<br><br>tap <img src="basement/ath/imgs/ios.png" width="20"> and select<br><strong>Add to Home Screen</strong> <img src="basement/ath/imgs/add-ios.png" width="20">',
+		ios: '<br>Offline reading? Full-screen?<br>Install the app in 3 seconds!<br><br>tap <img src="basement/ath/imgs/ios.png" width="20"> and select<br><strong>Add to Home Screen</strong> <img src="basement/ath/imgs/add-ios.png" width="16">',
 		android: 'To add this web app to the home screen open the browser option menu and tap on <strong>Add to homescreen</strong>. <small>The menu can be accessed by pressing the menu hardware button if your device has one, or by tapping the top right menu icon %icon.</small>'
 	},
 };
