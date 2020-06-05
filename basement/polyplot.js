@@ -9,6 +9,9 @@ const urlParams = new URLSearchParams(queryString);
 const endString = "<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>";
 const zoomLevels = [15, 18, 22, 25]
 
+const mobile_ua_strings = /(?:Mobile|iPhone|iPad|Android|Windows Phone)/;
+const mobile = mobile_ua_strings.test(navigator.userAgent);
+
 var book = false;
 var v = {
 	// Don't ask about the 48. Did I mention how I hate CSS and browsers?
@@ -30,12 +33,7 @@ $(document).ready(function() {
 	loadBook();
 	if (v['pp_dark']) { dark(); } else { light(); }
 	if (v['pp_serif']) { serif(); } else { sans_serif(); }
-	if (navigator.userAgent.indexOf( "Mobile" ) !== -1 || 
-	  navigator.userAgent.indexOf( "iPhone" ) !== -1 || 
-	  navigator.userAgent.indexOf( "Android" ) !== -1 || 
-	  navigator.userAgent.indexOf( "Windows Phone" ) !== -1) {
-	  	$('a.fontsize').css('visibility', 'visible');
-	}
+	if (mobile) $('a.fontsize').css('visibility', 'visible');
 });
 
 $('#booktext').scroll(function() {
