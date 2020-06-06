@@ -1,47 +1,49 @@
 <!-- Polyplot is copyright 2020 by Polyplot Berlin -->
 
-<head>
-	<link href="basement/polyplot.css" rel="stylesheet">
-	<link href="book.css" rel="stylesheet">
-	<script type="text/javascript" src="basement/jquery.min.js"></script>
-	<link rel="apple-touch-icon" sizes="128x128" href="icons/128x128.png">
-	<link rel="manifest" href="basement/manifest.webmanifest">
-	<script>
-		if('serviceWorker' in navigator) {
-			navigator.serviceWorker.register('basement/sw.js')
-			  .then(function() { console.log("Service worker registered"); });
-		};
-	</script>
-	<link rel="stylesheet" type="text/css" href="basement/ath/style/addtohomescreen.css">
-	<script src="basement/ath/src/addtohomescreen.js"></script>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-title" content="Install App">
-	<link rel="shortcut icon" sizes="16x16" href="basement/ath/imgs/icon-16x16.png">
-	<link rel="shortcut icon" sizes="196x196" href="basement/ath/imgs/icon-196x196.png">
-	<link rel="apple-touch-icon-precomposed" href="basement/ath/imgs/icon-152x152.png">
-</head>
-<body>
-	<nav role="navigation">
-		<div id="menuToggle">
-			<input type="checkbox" />
-			<span></span>
-			<span></span>
-			<span></span>
-			<ul id="menu">
-				<li><a href="javascript:startOver();">Start Over</a></li>
-				<li><a id="dark" href="javascript:toggleDark();">Dark Mode</a></li>
-				<li><a id="serif" href="javascript:toggleSerif();">Serif</a></li>
-				<li><a href="javascript:resetBook();">Factory Reset</a></li>
-			</ul>
-		</div>
-		<a class="fontsize" id="bigger" href="javascript:fontBigger();">A</a>
-		<a class="fontsize" id="smaller" href="javascript:fontSmaller();">A</a>
-	</nav>
-	<div id="filler"></div>
-	<div id="booktext">Loading book...</div>
-	<script type="text/javascript" src="basement/polyplot.js"></script>
-	<script type="text/javascript" src="book.js"></script>
-	<script>addToHomescreen();</script>
-</body>
+<html lang="en">
+	<head>
+		<title>Polyplot Demo</title>
+		<link href="basement/polyplot.css" rel="stylesheet">
+		<link href="book.css" rel="stylesheet">
+		<script type="text/javascript" src="basement/jquery.min.js"></script>
+		<link rel="apple-touch-icon" sizes="128x128" href="icons/128x128.png">
+		<link rel="manifest" href="basement/manifest.webmanifest">
+		<script>
+			if('serviceWorker' in navigator) {
+				navigator.serviceWorker.register('sw.js')
+				  .then(function() { console.log("Service worker registered"); });
+			};
+		</script>
+		<link rel="stylesheet" type="text/css" href="basement/ath/style/addtohomescreen.css">
+		<script src="basement/ath/src/addtohomescreen.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-title" content="Install App">
+		<meta name="theme-color" content="#000000">
+		<link rel="icon" sizes="256x256" href="icons/256x256.png">
+	</head>
+	<body>
+		<nav role="navigation">
+			<div id="menuToggle">
+				<input type="checkbox" />
+				<span></span>
+				<span></span>
+				<span></span>
+				<ul id="menu">
+					<li><a href="javascript:startOver();">Start Over</a></li>
+					<li><a id="dark" href="javascript:toggleDark();">Dark Mode</a></li>
+					<li><a id="serif" href="javascript:toggleSerif();">Serif</a></li>
+					<li><a href="javascript:resetBook();">Factory Reset</a></li>
+				</ul>
+			</div>
+			<a class="fontsize" id="bigger" href="javascript:fontBigger();">A</a>
+			<a class="fontsize" id="smaller" href="javascript:fontSmaller();">A</a>
+		</nav>
+		<div id="filler"></div>
+		<div id="booktext">Loading book...</div>
+		<script type="text/javascript" src="basement/polyplot.js"></script>
+		<script type="text/javascript" src="book.js"></script>
+		<script>addToHomescreen();</script>
+	</body>
+</html>
