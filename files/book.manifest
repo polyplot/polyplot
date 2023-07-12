@@ -1,0 +1,47 @@
+{
+    "name": "Polyplot Demo",
+    "short_name": "Polyplot Demo",
+    "description": "A famous adventure writer and a smart programmer explore the inner workings of Polyplot.",
+    "icons": [
+        {
+            "src": "/files/icons/1014x1024.png",
+            "sizes": "1024x1024",
+            "type": "image/png"
+        },
+        {
+            "src": "/files/icons/512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/files/icons/256x256.png",
+            "sizes": "256x256",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/files/icons/128x128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "/files/icons/64x64.png",
+            "sizes": "64x64",
+            "type": "image/png"
+        },
+        {
+            "src": "/files/icons/32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "/files/icons/16x16.png",
+            "sizes": "16x16",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/index.html",
+    "display": "fullscreen",
+    "theme_color": "#000000",
+    "background_color": "#000000"
+}
