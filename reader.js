@@ -332,7 +332,7 @@ function newHtmlPtr() {
 async function doBook(h = null) {
 	dbg("doBook");
  	if (!book) {
- 		book = getHTTP('/files/book.txt');
+ 		book = getHTTP('files/book.txt');
  		book = escapeCurlyBraces(book + endString);
  	}	
 	let html_ptr = h;
