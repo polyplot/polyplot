@@ -1,6 +1,6 @@
 {lock: You cannot yet revisit choices that are in the past. This is until you get to (one of the) endings of the story. Then you can page back and change any choices to pick up the story from there.}
 
-<img src="/files/demo-cover.png" width="100%">
+<img src="files/demo-cover.png" width="100%">
 
 <br>
 
@@ -48,7 +48,7 @@ As she finally reached the top the stairs he turned around. They peered down a m
 
 {anchor room_1}
 
-{audio /files/air.m4a}
+{audio files/air.m4a}
 
 This room's gold-coloured curtains and black carpet were definitely not his taste. But hey, at least it's clean here, not like downstairs. As he was still taking in the room the girl behind him started explaining the code underneath. "See, there was an option block that listed the doors, and each option had a jump after it. Everything that is not text to be printed in a polyplot novel is put in curly braces, and multiple block can be nested inside each other. It may take some getting used to, unless you're a programmer. We are quite used to nesting things in all sorts of brackets and braces. Technically the jump to this room wasn't even necessary as the text flow would have continued here without the jump as this is the first text after the option block. Sometimes it just reads cleaner though, especially if all the options are sort of equal as far as the story is concerned."
 
